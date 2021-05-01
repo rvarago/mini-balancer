@@ -1,3 +1,6 @@
+# Application-specific files
+mini-balancer.local.toml
+
 # Editors/IDEs
 .vscode
 
