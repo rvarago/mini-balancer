@@ -1,0 +1,11 @@
+[package]
+authors = ["Rafael Varago"]
+description = "A toy and mini load balancer"
+edition = "2018"
+name = "mini-balancer"
+version = "0.1.0"
+
+[dependencies]
+derive_more = "0.99"
+serde = {version = "1", features = ["derive"]}
+toml = "0.5"
