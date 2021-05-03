@@ -4,7 +4,6 @@ mod frontend;
 mod trace;
 
 use anyhow::Context;
-use config::AppConfig;
 use std::path::{Path, PathBuf};
 use structopt::StructOpt;
 
@@ -37,7 +36,7 @@ async fn run(cli: Cli) -> anyhow::Result<()> {
     app::start_with(config).await
 }
 
-async fn read_config<S>(path: S) -> anyhow::Result<AppConfig>
+async fn read_config<S>(path: S) -> anyhow::Result<config::App>
 where
     S: AsRef<Path>,
 {
@@ -50,5 +49,5 @@ where
             )
         })?;
 
-    AppConfig::from_toml(content.as_str()).context("failed to parse configuration")
+    config::App::from_toml(content.as_str()).context("failed to parse configuration")
 }

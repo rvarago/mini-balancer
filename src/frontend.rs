@@ -1,6 +1,5 @@
 //! Handler for frontend connections.
 
-use crate::config;
 use anyhow::Context;
 use std::net::SocketAddr;
 use tokio::{
@@ -10,52 +9,58 @@ use tokio::{
 use tracing::{error, info};
 
 /// A frontend server.
-pub struct Frontend {
-    name: config::FrontendName,
-    config: config::Frontend,
+pub struct Server {
+    local_address: SocketAddr,
 }
 
-impl Frontend {
-    /// Constructs a new [Frontend].
-    pub fn new(name: config::FrontendName, config: config::Frontend) -> Self {
-        Self { name, config }
+impl Server {
+    /// Constructs a new [Server].
+    pub fn bind_on(local_address: SocketAddr) -> Self {
+        Self { local_address }
     }
 
-    pub async fn serve(self, local_address: SocketAddr) -> anyhow::Result<()> {
-        let mut listener = self.bind(local_address).await?;
+    /// Serves requests at `local_address`.
+    pub async fn serve(self) -> anyhow::Result<()> {
+        let mut listener = self.bind().await?;
+
+        info!(local_address = %self.local_address, "listening for connections");
+
         loop {
-            let (stream, peer_address) = self.accept_from(&mut listener).await?;
-            tokio::spawn(async move {
-                info!("serving connection from {}", peer_address);
-                if let Err(e) = handle_connection(stream, peer_address).await {
-                    error!("served connection from {}: {}", peer_address, e)
-                } else {
-                    info!("served connection from {}", peer_address)
-                }
-            });
+            let (stream, peer_address) = accept_from(&mut listener).await?;
+            tokio::spawn(handle_connection(stream, peer_address));
         }
     }
 
-    async fn bind(&self, local_address: SocketAddr) -> anyhow::Result<TcpListener> {
-        TcpListener::bind(local_address)
+    async fn bind(&self) -> anyhow::Result<TcpListener> {
+        TcpListener::bind(self.local_address)
             .await
-            .with_context(|| format!("unable to bind {} on {}", self.name, local_address))
-    }
-
-    async fn accept_from(
-        &self,
-        listener: &mut TcpListener,
-    ) -> anyhow::Result<(TcpStream, SocketAddr)> {
-        listener
-            .accept()
-            .await
-            .with_context(|| format!("unable to accept connection by {} ", self.name))
+            .with_context(|| format!("unable to bind on {}", self.local_address))
     }
 }
 
-async fn handle_connection<S>(stream: S, peer_address: SocketAddr) -> anyhow::Result<()>
+async fn accept_from(listener: &mut TcpListener) -> anyhow::Result<(TcpStream, SocketAddr)> {
+    listener
+        .accept()
+        .await
+        .context("unable to accept connection")
+}
+
+#[tracing::instrument(skip(stream))]
+async fn handle_connection<S>(stream: S, peer_address: SocketAddr)
 where
     S: AsyncRead + AsyncWrite,
 {
-    todo!()
+    info!("serving connection");
+    if let Err(e) = process(stream).await {
+        error!(reason = %e, "failed to served connection")
+    } else {
+        info!("served connection")
+    }
+}
+
+async fn process<S>(_stream: S) -> anyhow::Result<()>
+where
+    S: AsyncRead + AsyncWrite,
+{
+    Ok(())
 }
