@@ -13,7 +13,7 @@ pub struct AppConfig {
 }
 
 /// A wrapper around a frontend name.
-#[derive(Debug, Display, PartialEq, Eq, Hash, Deserialize)]
+#[derive(Debug, Display, Clone, PartialEq, Eq, Hash, Deserialize)]
 #[serde(transparent)]
 pub struct FrontendName(String);
 
@@ -30,7 +30,7 @@ pub struct Frontend {
 
 /// A backend where local traffic is to be forwarded.
 #[derive(Debug, PartialEq, Eq, Deserialize)]
-struct Backend {
+pub struct Backend {
     /// Target address for local traffic.
     #[serde(rename = "forward_to")]
     target_address: SocketAddr,
@@ -78,12 +78,18 @@ forward_to = "127.0.0.1:9001"
                         local_address: SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 8000).into(),
                         backends: vec![
                             Backend {
-                                target_address: SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 9000)
-                                    .into(),
+                                target_address: SocketAddrV4::new(
+                                    Ipv4Addr::new(127, 0, 0, 1),
+                                    9000
+                                )
+                                .into(),
                             },
                             Backend {
-                                target_address: SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 9001)
-                                    .into(),
+                                target_address: SocketAddrV4::new(
+                                    Ipv4Addr::new(127, 0, 0, 1),
+                                    9001
+                                )
+                                .into(),
                             },
                         ],
                     },
