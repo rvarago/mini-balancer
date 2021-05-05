@@ -1,6 +1,7 @@
 mod app;
 mod config;
 mod frontend;
+mod middleware;
 mod trace;
 
 use anyhow::Context;
