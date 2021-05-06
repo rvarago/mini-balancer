@@ -11,6 +11,7 @@ pub struct Param<T> {
 }
 
 /// Constructs a new [Param].
+#[allow(dead_code)]
 pub fn param<T>(value: T) -> Param<T> {
     Param { value }
 }
