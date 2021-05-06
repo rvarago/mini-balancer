@@ -20,6 +20,7 @@ pub fn connect() -> Client {
 impl Pipe<SocketAddr> for Client {
     type Output = TcpStream;
 
+    #[tracing::instrument(skip(self))]
     async fn through(&self, target_address: SocketAddr) -> Result<Self::Output, PipeError> {
         debug!("opening client connection");
 
