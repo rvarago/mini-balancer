@@ -3,6 +3,8 @@
 pub mod adapters;
 pub mod client;
 pub mod param;
+pub mod route;
+pub mod selector;
 pub mod splice;
 
 use self::adapters::{

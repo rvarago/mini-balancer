@@ -10,6 +10,8 @@ pub use self::{
         },
         client::connect,
         param::param,
+        route::route,
+        selector::cyclical::RoundRobin,
         splice::splice,
         PipeBuilder,
     },
