@@ -6,15 +6,7 @@ pub mod param;
 pub mod proj;
 pub mod splice;
 
-pub use self::{
-    chain::chain,
-    client::connect,
-    param::param,
-    proj::{fst, snd},
-    splice::splice,
-};
-
-use self::chain::Chain;
+use self::chain::{chain, Chain};
 use async_trait::async_trait;
 use std::marker::PhantomData;
 

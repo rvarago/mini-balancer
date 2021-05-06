@@ -1,6 +1,6 @@
 //! Handler for frontend connections.
 
-use crate::middleware::Pipe;
+use super::middleware::Pipe;
 use anyhow::Context;
 use std::{net::SocketAddr, sync::Arc};
 use tokio::{

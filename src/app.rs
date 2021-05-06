@@ -1,8 +1,8 @@
 //! Application wiring and startup routines.
 
 use crate::{
-    config, frontend,
-    middleware::{connect, param, splice, PipeBuilder},
+    balancing::{connect, param, splice, PipeBuilder, Server},
+    config,
 };
 
 /// Starts up the application.
@@ -14,7 +14,7 @@ pub async fn start_with(config: config::App) -> anyhow::Result<()> {
         .chain(splice())
         .build();
 
-    frontend::Server::bind_on(config.frontend.local_address)
+    Server::bind_on(config.frontend.local_address)
         .serve(middleware)
         .await
 }
