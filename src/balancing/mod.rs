@@ -4,13 +4,13 @@ mod middleware;
 pub use self::{
     frontend::Server,
     middleware::{
-        PipeBuilder,
-        {
+        adapters::{
             chain::chain,
-            client::connect,
-            param::param,
             proj::{fst, snd},
-            splice::splice,
         },
+        client::connect,
+        param::param,
+        splice::splice,
+        PipeBuilder,
     },
 };

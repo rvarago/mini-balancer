@@ -1,12 +1,14 @@
 //! A collection of middleware built for composability.
 
-pub mod chain;
+pub mod adapters;
 pub mod client;
 pub mod param;
-pub mod proj;
 pub mod splice;
 
-use self::chain::{chain, Chain};
+use self::adapters::{
+    chain::{chain, Chain},
+    proj,
+};
 use async_trait::async_trait;
 use std::marker::PhantomData;
 

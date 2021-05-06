@@ -1,6 +1,6 @@
 //! Chains two pipes sequentially.
 
-use super::{Pipe, PipeError};
+use super::super::{Pipe, PipeError};
 use async_trait::async_trait;
 
 /// A chain of two pipes.

@@ -1,6 +1,6 @@
 //! Projections of a pipe of tuples into a pipe of a component.
 
-use super::{Pipe, PipeError};
+use super::super::{Pipe, PipeError};
 use async_trait::async_trait;
 
 /// A projection of a pipe (S, X) into a pipe of S.
