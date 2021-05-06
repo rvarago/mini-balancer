@@ -1,3 +1,5 @@
+//! A mini load balancer.
+
 mod app;
 mod balancing;
 mod config;
