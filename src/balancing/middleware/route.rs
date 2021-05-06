@@ -33,7 +33,8 @@ where
             .selector
             .select()
             .await
-            .context("unable to select a backend")?;
+            .context("unable to select a backend")?
+            .context("no backend was found")?;
 
         trace!("selected a backend");
 

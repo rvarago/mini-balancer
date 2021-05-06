@@ -14,5 +14,7 @@ pub trait Selector {
     /// Selects an appropriate backend.
     ///
     /// Given an incoming connection, selects which backend should handle it.
-    async fn select(&self) -> Result<SocketAddr, Self::Error>;
+    ///
+    /// A operation may succeed with no backend found.
+    async fn select(&self) -> Result<Option<SocketAddr>, Self::Error>;
 }

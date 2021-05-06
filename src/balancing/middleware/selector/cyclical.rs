@@ -15,13 +15,13 @@ pub struct RoundRobin {
 /// A request to select a backend.
 #[derive(Debug)]
 pub struct Message {
-    cb: oneshot::Sender<SocketAddr>,
+    cb: oneshot::Sender<Option<SocketAddr>>,
 }
 
 impl RoundRobin {
-    /// Creates a round-robin selector relevant and handle.
+    /// Creates a round-robin selector for a backend within the provided sequence.
     ///
-    /// Backends are taken from the given list.
+    /// Backends are selected cyclically in-order.
     pub fn new(backends: Vec<SocketAddr>) -> RoundRobin {
         let (tx, rx) = mpsc::channel(1024); // TODO: Read from config.
 
@@ -35,7 +35,7 @@ impl RoundRobin {
 impl Selector for RoundRobin {
     type Error = RoundRobinError;
 
-    async fn select(&self) -> Result<SocketAddr, Self::Error> {
+    async fn select(&self) -> Result<Option<SocketAddr>, Self::Error> {
         let (tx, rx) = oneshot::channel();
 
         self.msgs.send(Message { cb: tx }).await?;
@@ -55,7 +55,6 @@ pub enum RoundRobinError {
 async fn handle_messages(backends: Vec<SocketAddr>, mut rx: mpsc::Receiver<Message>) {
     let mut backends = backends.into_iter().cycle();
     while let Some(msg) = rx.recv().await {
-        let backend = backends.next().unwrap();
-        let _ = msg.cb.send(backend);
+        let _ = msg.cb.send(backends.next());
     }
 }
