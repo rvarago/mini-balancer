@@ -5,7 +5,7 @@ use anyhow::Context;
 use async_trait::async_trait;
 use std::net::SocketAddr;
 use tokio::net::TcpStream;
-use tracing::{debug, info, Level};
+use tracing::{debug, info};
 
 /// A client connector.
 #[derive(Debug)]
@@ -21,9 +21,6 @@ impl Pipe<SocketAddr> for Client {
     type Output = TcpStream;
 
     async fn through(&self, target_address: SocketAddr) -> Result<Self::Output, PipeError> {
-        let span = tracing::span!(Level::DEBUG, "client_connect", target_address = %target_address);
-        let _enter = span.enter();
-
         debug!("opening client connection");
 
         let conn = TcpStream::connect(target_address)
