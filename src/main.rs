@@ -1,11 +1,7 @@
 //! A mini load balancer.
 
-mod app;
-mod balancing;
-mod config;
-mod trace;
-
 use anyhow::Context;
+use mini_balancer::{config, trace};
 use std::path::{Path, PathBuf};
 use structopt::StructOpt;
 
@@ -35,7 +31,7 @@ async fn main() -> anyhow::Result<()> {
 async fn run(cli: Cli) -> anyhow::Result<()> {
     trace::init(cli.verbose.into());
     let config = read_config(&cli.config).await?;
-    app::start_with(config).await
+    mini_balancer::start_with(config).await
 }
 
 async fn read_config<S>(path: S) -> anyhow::Result<config::App>

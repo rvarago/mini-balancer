@@ -1,9 +1,11 @@
 //! Application wiring and startup routines.
 
-use crate::{
-    balancing::{connect, route, splice, PipeBuilder, RoundRobin, Server},
-    config,
-};
+pub mod config;
+pub mod trace;
+
+mod balancing;
+
+use crate::balancing::{connect, route, splice, PipeBuilder, RoundRobin, Server};
 
 /// Starts up the application.
 pub async fn start_with(config: config::App) -> anyhow::Result<()> {
