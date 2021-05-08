@@ -1,7 +1,6 @@
 //! A mini load balancer.
 
 use anyhow::Context;
-use mini_balancer::{config, trace};
 use std::path::{Path, PathBuf};
 use structopt::StructOpt;
 
@@ -29,12 +28,12 @@ async fn main() -> anyhow::Result<()> {
 }
 
 async fn run(cli: Cli) -> anyhow::Result<()> {
-    trace::init(cli.verbose.into());
+    mini_balancer::trace::init(cli.verbose.into());
     let config = read_config(&cli.config).await?;
     mini_balancer::start_with(config).await
 }
 
-async fn read_config<S>(path: S) -> anyhow::Result<config::App>
+async fn read_config<S>(path: S) -> anyhow::Result<mini_balancer::config::App>
 where
     S: AsRef<Path>,
 {
@@ -47,5 +46,5 @@ where
             )
         })?;
 
-    config::App::from_toml(content.as_str()).context("failed to parse configuration")
+    mini_balancer::config::App::from_toml(content.as_str()).context("failed to parse configuration")
 }
