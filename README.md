@@ -1,10 +1,10 @@
 # mini-balancer
 
-"A toy and mini load-balancer."
+A toy and mini load-balancer.
 
 # Disclaimer
 
-> This is a toy project of mine, only meant to serve as something fun for me to build with Rust. I do not intend to maintain it nor make it production-ready at all. 
+> This is just a toy project of mine, only meant to serve as something fun for me to build with Rust. I do not intend to maintain nor make it production-ready at all. 
 
 # Description
 
@@ -41,11 +41,11 @@ Let's consider we have two instances of an application listening for connections
 
 For simplicity, let's simulate our instances as echo servers with `socat`:
 
-```bash
+```
 λ socat -v tcp-l:8080,fork exec:'/bin/cat'
 ```
 
-```bash
+```
 λ socat -v tcp-l:9090,fork exec:'/bin/cat'
 ```
 
@@ -64,17 +64,17 @@ forward_to = "127.0.0.1:9090"
 
 We can then start `mini-balancer` as:
 
-```bash
+```
 λ mini-balancer -v -c mini-balancer.local.toml
 ```
 
 To simulate a client, we once again rely on `socat` to send a message as:
 
-```bash
+```
 λ echo "first connection" | socat tcp:127.0.0.1:7070 -
 ```
 
-```bash
+```
 λ echo "second connection" | socat tcp:127.0.0.1:7070 -
 ```
 
@@ -94,21 +94,22 @@ Lastly, if we open a third connection, it should again go to the first backend.
 
 # Instructions
 
-* Minimum Supported Rust Version (MSRV): `1.51.0`,
+* Minimum Supported Rust Version (MSRV): `1.51.0`.
+
 ## Linting
 
-```bash
+```
 cargo clippy
 ```
 
 ## Building
 
-```bash
+```
 cargo build
 ```
 
 ## Testing
 
-```bash
+```
 cargo test
 ```
