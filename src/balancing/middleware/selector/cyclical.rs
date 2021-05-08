@@ -22,7 +22,7 @@ impl RoundRobin {
     /// Creates a round-robin selector for a backend within the provided sequence.
     ///
     /// Backends are selected cyclically in-order.
-    pub fn new(backends: Vec<SocketAddr>) -> RoundRobin {
+    pub fn with_backends(backends: Vec<SocketAddr>) -> RoundRobin {
         let (tx, rx) = mpsc::channel(1024); // TODO: Read from config.
 
         tokio::spawn(handle_messages(backends, rx));

@@ -13,7 +13,7 @@ pub async fn start_with(config: config::App) -> anyhow::Result<()> {
 }
 
 async fn start_frontend_with(config: config::Frontend) -> anyhow::Result<()> {
-    let round_robin = RoundRobin::new(
+    let round_robin = RoundRobin::with_backends(
         config
             .backends
             .into_iter()
