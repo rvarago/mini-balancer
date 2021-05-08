@@ -1,12 +1,12 @@
 //! A collection of middleware built for composability.
 
-pub mod adapters;
+pub mod adapter;
 pub mod client;
 pub mod route;
 pub mod selector;
 pub mod splice;
 
-use self::adapters::{
+use self::adapter::{
     chain::{chain, Chain},
     proj,
 };
