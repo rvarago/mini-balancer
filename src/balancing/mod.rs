@@ -9,7 +9,6 @@ pub use self::{
             proj::{fst, snd},
         },
         client::connect,
-        param::param,
         route::route,
         selector::cyclical::RoundRobin,
         splice::splice,
