@@ -4,10 +4,7 @@ mod middleware;
 pub use self::{
     frontend::Server,
     middleware::{
-        adapters::{
-            chain::chain,
-            proj::{fst, snd},
-        },
+        adapters::{chain::chain, proj::snd},
         client::connect,
         route::route,
         selector::cyclical::RoundRobin,

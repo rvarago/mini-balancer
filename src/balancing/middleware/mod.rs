@@ -44,11 +44,6 @@ where
         PipeBuilder::new(chain(self.pipe, then))
     }
 
-    #[allow(dead_code)]
-    pub fn chain_fst<R>(self, then: R) -> PipeBuilder<Chain<P, proj::First<R>>, S> {
-        self.chain(proj::fst(then))
-    }
-
     pub fn chain_snd<R>(self, then: R) -> PipeBuilder<Chain<P, proj::Second<R>>, S> {
         self.chain(proj::snd(then))
     }
