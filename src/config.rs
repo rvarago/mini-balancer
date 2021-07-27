@@ -31,7 +31,7 @@ pub struct Backend {
 }
 
 impl App {
-    /// Parses a TOML-encoded configuration into [AppConfig].
+    /// Parses a TOML-encoded configuration into [App].
     pub fn from_toml<S>(content: S) -> Result<App, toml::de::Error>
     where
         S: AsRef<str>,
