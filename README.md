@@ -2,11 +2,11 @@
 
 A toy and mini load-balancer.
 
-# Disclaimer
+## Disclaimer
 
-> This is just a toy project of mine, only meant to serve as something fun for me to build with Rust. I do not intend to maintain nor make it production-ready at all. 
+> This is just a toy project of mine, only meant to serve as something fun for me to build with Rust. I do not intend to maintain nor make it production-ready at all.
 
-# Description
+## Description
 
 `mini-balancer` is a simple connection-based, transport-level, TCP-only, mini load-balancer, where a *frontend* listens for TCP connections and then forwards them to one of the *backends*.
 
@@ -41,11 +41,11 @@ Let's consider we have two instances of an application listening for connections
 
 For simplicity, let's simulate our instances as echo servers with `socat`:
 
-```
+```sh
 λ socat -v tcp-l:8080,fork exec:'/bin/cat'
 ```
 
-```
+```sh
 λ socat -v tcp-l:9090,fork exec:'/bin/cat'
 ```
 
@@ -64,23 +64,23 @@ forward_to = "127.0.0.1:9090"
 
 We can then start `mini-balancer` as:
 
-```
+```sh
 λ mini-balancer -v -c mini-balancer.local.toml
 ```
 
 To simulate a client, we once again rely on `socat` to send a message as:
 
-```
+```sh
 λ echo "first connection" | socat tcp:127.0.0.1:7070 -
 ```
 
-```
+```sh
 λ echo "second connection" | socat tcp:127.0.0.1:7070 -
 ```
 
 The first connection should go to the first backend, whereas the second connection should go to the second backend. The logs should look like as follows:
 
-```
+```sh
 May 08 14:18:45.305  INFO frontend{local_address=127.0.0.1:7070}: mini_balancer::balancing::frontend: listening for connections
 May 08 14:19:01.488  INFO handle_connection{peer_address=127.0.0.1:49438}: mini_balancer::balancing::frontend: serving connection
 May 08 14:19:01.488  INFO handle_connection{peer_address=127.0.0.1:49438}:through{target_address=127.0.0.1:8080}: mini_balancer::balancing::middleware::client: opened client connection
@@ -92,24 +92,24 @@ May 08 14:19:13.627  INFO handle_connection{peer_address=127.0.0.1:49444}: mini_
 
 Lastly, if we open a third connection, it should again go to the first backend.
 
-# Instructions
+## Instructions
 
 * Minimum Supported Rust Version (MSRV): `1.51.0`.
 
 ## Linting
 
-```
+```sh
 cargo clippy
 ```
 
 ## Building
 
-```
+```sh
 cargo build
 ```
 
 ## Testing
 
-```
+```sh
 cargo test
 ```
